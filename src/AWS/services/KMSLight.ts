@@ -2,11 +2,11 @@
 import { KMS } from "aws-sdk";
 import { MapEnv } from "map-env-node";
 import { Credential } from "AWS/core/Credential";
-import { IAWSARN } from "AWS/interfaces/IAWSARN";
+import { IKMSARN } from "AWS/interfaces/IKMSARN";
 
 export class KMSLight{
     private kms:KMS;
-    private arnDefault:string;
+    private kmsArn:IKMSARN;
 
     constructor(){
         const {accessKeyId, secretAccessKey, region} = Credential.getOptions();
@@ -18,14 +18,13 @@ export class KMSLight{
     }
 
     private getARNDefault():string{
-        if(!this.arnDefault){
-            let awsArn = MapEnv.get<IAWSARN>("AWS_ARN");
-            if(!awsArn.KMS.default){
+        if(!this.kmsArn){
+            let kmsArn = MapEnv.get<IKMSARN>("AWS_KMS_ARN");
+            if(!kmsArn.default){
                 throw new Error("O ARN default do KMS não está definido.");
             }
-            this.arnDefault = awsArn.KMS.default;
         }
-        return this.arnDefault;
+        return this.kmsArn.default;
     }
 
     async encrypt(plainText:string, arnKeyId?:string):Promise<string>{
