@@ -1,5 +1,6 @@
-import { IAWSCredential } from "AWS/interfaces/IAWSCredential";
+
 import { MapEnv } from "map-env-node";
+import { IAWSCredential } from "../interfaces/IAWSCredential";
 
 export class Credential{
     static getOptions():IAWSCredential {

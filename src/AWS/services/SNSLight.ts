@@ -1,6 +1,6 @@
 import { SNS, AWSError } from "aws-sdk";
-import { Credential } from "AWS/core/Credential";
 import { PromiseResult } from "aws-sdk/lib/request";
+import { Credential } from "../core/Credential";
 
 export class SNSLight{
     private sns:SNS;

@@ -1,10 +1,9 @@
 
 import { KMS } from "aws-sdk";
 import { MapEnv } from "map-env-node";
-import { Credential } from "AWS/core/Credential";
-import { IKMSARN } from "AWS/interfaces/IKMSARN";
-
-export class KMSLight{
+import { IKMSARN } from "../interfaces/IKMSARN";
+import { Credential } from "../core/Credential";
+ export class KMSLight{
     private kms:KMS;
     private kmsArn:IKMSARN;
 
