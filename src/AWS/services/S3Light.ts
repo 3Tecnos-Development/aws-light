@@ -1,6 +1,6 @@
 import { S3 } from "aws-sdk";
 import { Credential } from "../core/Credential";
-import { GetObjectRequest, GetObjectOutput, DeleteObjectRequest, DeleteObjectOutput, DeleteObjectsRequest, ObjectIdentifier, DeletedObjects, PutObjectRequest, ListObjectsV2Request } from "aws-sdk/clients/s3";
+import { GetObjectRequest, GetObjectOutput, Object, DeleteObjectRequest, DeleteObjectOutput, DeleteObjectsRequest, ObjectIdentifier, DeletedObjects, PutObjectRequest, ListObjectsV2Request } from "aws-sdk/clients/s3";
 import { v4 as uuid } from 'uuid';
 import fs from 'fs';
 export class S3Light{
