@@ -1,9 +1,8 @@
 import { S3 } from "aws-sdk";
 import { Credential } from "../core/Credential";
-import { GetObjectRequest, GetObjectOutput, DeleteObjectRequest, DeleteObjectOutput, DeleteObjectsRequest, ObjectIdentifier, DeletedObjects, PutObjectRequest } from "aws-sdk/clients/s3";
+import { GetObjectRequest, GetObjectOutput, DeleteObjectRequest, DeleteObjectOutput, DeleteObjectsRequest, ObjectIdentifier, DeletedObjects, PutObjectRequest, ListObjectsV2Request } from "aws-sdk/clients/s3";
 import { v4 as uuid } from 'uuid';
 import fs from 'fs';
-
 export class S3Light{
     private s3:S3;
 
@@ -75,6 +74,21 @@ export class S3Light{
                     return reject(err?.message);                    
                 } 
                 return resolve(data.Deleted);
+            });
+        });
+    }
+
+    getObjects(bucketName: string, prefix?: string): Promise<Object[]>{
+        const listObjRequest: ListObjectsV2Request = {
+            Bucket: bucketName,
+            Prefix: prefix
+        };
+        return new Promise((resolve, reject)=> {
+            this.s3.listObjectsV2(listObjRequest, (err, data) => {
+                if (err) {
+                    return reject(err?.message);                    
+                } 
+                return resolve(data.Contents);
             });
         });
     }
