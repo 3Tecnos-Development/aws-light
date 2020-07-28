@@ -19,5 +19,19 @@ export class SNSLight{
             Message:message,
             TopicArn:topicArn
         }).promise();
-    }
+		}		
+
+		async publishSMS(phoneNumber: string, message: string): Promise<PromiseResult<SNS.PublishResponse, AWSError>> {
+			await this.sns.setSMSAttributes({
+				attributes: {
+					DefaultSMSType: 'Transactional'
+				}
+			}).promise();
+	
+			return await this.sns.publish({
+				PhoneNumber: phoneNumber,
+				Message: message,
+				MessageStructure: 'string'
+			}).promise();
+		}
 }
