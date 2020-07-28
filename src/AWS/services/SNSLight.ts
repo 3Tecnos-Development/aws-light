@@ -1,15 +1,20 @@
-import { SNS, AWSError } from "aws-sdk";
+import AWS, { SNS, AWSError } from "aws-sdk";
 import { PromiseResult } from "aws-sdk/lib/request";
 import { Credential } from "../core/Credential";
 
 export class SNSLight{
-    private sns:SNS;
+		private sns:SNS;
+		private accessKeyId: string;
+		private secretAccessKey: string;
 
     constructor(){
-        const {accessKeyId, secretAccessKey, region} = Credential.getOptions();
+				const {accessKeyId, secretAccessKey, region} = Credential.getOptions();
+				this.accessKeyId = accessKeyId;
+				this.secretAccessKey = secretAccessKey;
+
         this.sns = new SNS({
-            accessKeyId, 
-            secretAccessKey, 
+            accessKeyId,
+            secretAccessKey,
             region
         });
     }
@@ -21,14 +26,21 @@ export class SNSLight{
         }).promise();
 		}		
 
-		async publishSMS(phoneNumber: string, message: string): Promise<PromiseResult<SNS.PublishResponse, AWSError>> {
-			await this.sns.setSMSAttributes({
+		async publishSMS(phoneNumber: string, message: string, region: string = 'us-west-2'): Promise<PromiseResult<SNS.PublishResponse, AWSError>> {
+
+			const snsSMS = new SNS({ 
+				accessKeyId: this.accessKeyId, 
+				secretAccessKey: this.secretAccessKey, 
+				region: region 
+			});
+			
+			await snsSMS.setSMSAttributes({
 				attributes: {
 					DefaultSMSType: 'Transactional'
 				}
 			}).promise();
 	
-			return await this.sns.publish({
+			return await snsSMS.publish({
 				PhoneNumber: phoneNumber,
 				Message: message,
 				MessageStructure: 'string'
