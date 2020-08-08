@@ -18,8 +18,8 @@ import { Credential } from "../core/Credential";
 
     private getARNDefault():string{
         if(!this.kmsArn){
-            let kmsArn = MapEnv.get<IKMSARN>("AWS_KMS_ARN");
-            if(!kmsArn.default){
+            this.kmsArn = MapEnv.get<IKMSARN>("AWS_KMS_ARN");
+            if(!this.kmsArn.default){
                 throw new Error("O ARN default do KMS não está definido.");
             }
         }
